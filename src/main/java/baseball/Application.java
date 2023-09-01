@@ -1,128 +1,124 @@
 package baseball;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import camp.nextstep.edu.missionutils.Console;
+import camp.nextstep.edu.missionutils.Randoms;
 
 public class Application {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+	public static void main(String[] args) {
 
+		int quit = 0;
 
+		while (!(quit == 2)) {
 
-        while(true){
+			List<Integer> computer = new ArrayList<>();
+			while (computer.size() < 3) {
+				int randomNumber = Randoms.pickNumberInRange(1, 9);
+				if (!computer.contains(randomNumber)) {
+					computer.add(randomNumber);
+				}
+			}
 
-            System.out.println("Start Baseball game");
+			System.out.println("숫자 야구 게임을 시작합니다.");
 
-            int a = 3;
-            HashSet<Integer> ran = new HashSet<Integer>();
-            for (int i = 0; ran.size()<a; i++) {
-                ran.add((int) (Math.random() * 9 + 1));
-            }
-            System.out.println(ran);
-            int st_count = 0;
+			System.out.println(computer);
+			int st_count = 0;
 
-            while ( !(st_count == 3) ) {
+			while (!(st_count == 3)) {
 
-                int tmp;
-                try {
-                    System.out.print("Insert number : ");
-                    tmp = scanner.nextInt();
-                    if (!(0 < tmp && tmp < 1000)) {
-                        System.out.println("Insert wrong number.");
-                        break;
-                    }
+				System.out.print("숫자를 입력해주세요 : ");
+				String tmp = Console.readLine();
 
-                } catch (Exception e) {
-                    throw new IllegalArgumentException("Insert wrong number");
-                }
+				int test;
+				test = Integer.parseInt(tmp);
+				try {
 
+					if (!(0 < test && test < 1000)) {
+						System.out.println("Insert wrong number.");
+						break;
+					}
 
-                ArrayList<Integer> input = new ArrayList<Integer>();
-                input.add((int) (tmp / 100));
-                input.add((int) (tmp / 10 - Math.floor(tmp / 100) * 10));
-                input.add((int) (tmp - Math.floor(tmp / 10) * 10));
+				} catch (Exception e) {
+					throw new IllegalArgumentException("Insert wrong number");
+				}
 
-                Strike st = new Strike();
-                Ball ba = new Ball();
+				List<Integer> input = new ArrayList<>();
+				String[] in;
+				in = tmp.split("");
+				for (int i = 0; i < in.length; i++) {
+					input.add(Integer.parseInt(in[i]));
+				}
 
+				Strike st = new Strike();
 
-                st_count = st.Strike(ran, input);
-                int ba_count = 0;
-                ba_count = ba.Ball(ran, input);
+				st_count = st.strike(computer, input);
+				int ba_count;
+				ba_count = st.ball(computer, input);
 
+				Print p = new Print();
+				p.print(ba_count, st_count);
 
-                print p = new print();
-                p.print(ba_count, st_count);
+				input.clear();
 
-                input.clear();
+			}
 
-            }
+			System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
 
+			quit = 0;
+			while (!(quit == 1 || quit == 2)) {
+				System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
+				quit = Integer.parseInt(Console.readLine());
+			}
 
-
-
-            System.out.println("You correct All number");
-            System.out.println("Restart 1, Quit 2");
-            int quit = scanner.nextInt();
-            if(quit == 1){
-                continue;
-            }else if(quit == 2){
-                break;
-            }
-
-
-        }
-
-
-
-
-    }
+		}
+	}
 }
-
 
 class Strike {
-    int count =0;
-    int Strike(HashSet set, ArrayList list){
+	int countSt = 0;
+	int countBa = 0;
 
-        Iterator s1 = set.iterator();
-        for(int i =0; s1.hasNext(); i++){
-            int value = (int)s1.next();
-            if( value == (int)list.get(i) ){
-                count += 1;
-            }
-        }
-        return count;
-    }
+	int strike(List<Integer> listComputer, List<Integer> listInput) {
+
+		Iterator<Integer> s1 = listComputer.iterator();
+		for (int i = 0; s1.hasNext(); i++) {
+			int value = s1.next();
+			if (value == listInput.get(i)) {
+				countSt++;
+			}
+		}
+		return countSt;
+	}
+
+	// 볼, 스트라이크 갯수를 셈
+	int ball(List<Integer> listComputer, List<Integer> listInput) {
+
+		for (int i = 0; i < listInput.size(); i++) {
+			int value = listInput.get(i);
+			if (listComputer.contains(value)) {
+				countBa++;
+			}
+		}
+		return countBa;
+	}
 }
 
-class Ball{
-
-    int Ball(HashSet set, ArrayList list){
-        int count = 0;
-
-        Iterator itb = list.iterator();
-        for(int i=0; i<list.size();i++){
-            int value = (int)list.get(i);
-            if(set.contains(value)){
-                count += 1;
-            }
-        }
-        return count;
-    }
-}
-
-class print{
-
-    void print(int i, int j){
-        if(i==0) {
-            System.out.println("Nothing");
-        }else if(j==0){
-            System.out.println(i+"Ball");
-        }else if(i==j){
-            System.out.println(j+"Strike");
-        }else{
-            System.out.println((i-j) +"Ball " +j +"Strike");
-        }
-    }
+// 볼, 스트라이크 출력
+class Print {
+	void print(int ballcount, int strikecount) {
+		if (ballcount == 0) {
+			System.out.println("낫싱");
+		} else if (strikecount == 0) {
+			System.out.println(ballcount + "볼");
+		} else if (ballcount == strikecount) {
+			System.out.println(strikecount + "스트라이크");
+		} else {
+			System.out.println((ballcount - strikecount) + "볼 " + strikecount + "스트라이크");
+		}
+	}
 }
 
 
