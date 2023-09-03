@@ -31,14 +31,8 @@ public class Application {
 				System.out.print("숫자를 입력해주세요 : ");
 				String tmp = Console.readLine();
 
-				List<Integer> input = new ArrayList<>();
-				String[] in;
-				in = tmp.split("");
-				for (int i = 0; i < in.length; i++) {
-					if (!input.contains(Integer.parseInt(in[i]))) {
-						input.add(Integer.parseInt(in[i]));
-					}
-				}
+				Input in = new Input();
+				List<Integer> input = in.input(tmp);
 
 				Test.testLength(input);
 				Test.testvalue(input);
@@ -65,6 +59,23 @@ public class Application {
 			}
 
 		}
+	}
+}
+
+//입력한 숫자를 List로 변환
+class Input {
+	List<Integer> input = new ArrayList<>();
+	String[] in;
+
+	List<Integer> input(String tmp) {
+
+		in = tmp.split("");
+		for (int i = 0; i < in.length; i++) {
+			if (!input.contains(Integer.parseInt(in[i]))) {
+				input.add(Integer.parseInt(in[i]));
+			}
+		}
+		return input;
 	}
 }
 
@@ -118,7 +129,7 @@ class Test {
 	static void testLength(List<Integer> input) {
 
 		if (!(input.size() == 3)) {
-			throw new IllegalArgumentException("IllegalArgumentException");
+			throw new IllegalArgumentException();
 		}
 
 	}
@@ -128,7 +139,7 @@ class Test {
 
 		for (int i = 0; i < input.size(); i++) {
 			if (!(0 < input.get(i) && input.get(i) < 10)) {
-				throw new IllegalArgumentException("IllegalArgumentException");
+				throw new IllegalArgumentException();
 			}
 		}
 
