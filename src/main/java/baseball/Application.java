@@ -24,7 +24,6 @@ public class Application {
 
 			System.out.println("숫자 야구 게임을 시작합니다.");
 
-			System.out.println(computer);
 			int st_count = 0;
 
 			while (!(st_count == 3)) {
@@ -32,25 +31,17 @@ public class Application {
 				System.out.print("숫자를 입력해주세요 : ");
 				String tmp = Console.readLine();
 
-				int test;
-				test = Integer.parseInt(tmp);
-				try {
-
-					if (!(0 < test && test < 1000)) {
-						System.out.println("Insert wrong number.");
-						break;
-					}
-
-				} catch (Exception e) {
-					throw new IllegalArgumentException("Insert wrong number");
-				}
-
 				List<Integer> input = new ArrayList<>();
 				String[] in;
 				in = tmp.split("");
 				for (int i = 0; i < in.length; i++) {
-					input.add(Integer.parseInt(in[i]));
+					if (!input.contains(Integer.parseInt(in[i]))) {
+						input.add(Integer.parseInt(in[i]));
+					}
 				}
+
+				Test.testLength(input);
+				Test.testvalue(input);
 
 				Strike st = new Strike();
 
@@ -121,4 +112,26 @@ class Print {
 	}
 }
 
+//입력 예외 테스트
+class Test {
+	//입력 숫자의 길이 테스트
+	static void testLength(List<Integer> input) {
 
+		if (!(input.size() == 3)) {
+			throw new IllegalArgumentException("IllegalArgumentException");
+		}
+
+	}
+
+	//입력 숫자의 중복값 테스트
+	static void testvalue(List<Integer> input) {
+
+		for (int i = 0; i < input.size(); i++) {
+			if (!(0 < input.get(i) && input.get(i) < 10)) {
+				throw new IllegalArgumentException("IllegalArgumentException");
+			}
+		}
+
+	}
+
+}
