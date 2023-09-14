@@ -71,9 +71,9 @@ class Input {
 	List<Integer> input = new ArrayList<>();
 	String[] in;
 
-	List<Integer> input(String tmp) {
+	List<Integer> input(String insertion) {
 
-		in = tmp.split("");
+		in = insertion.split("");
 		for (int i = 0; i < in.length; i++) {
 			if (!input.contains(Integer.parseInt(in[i]))) {
 				input.add(Integer.parseInt(in[i]));
