@@ -33,10 +33,10 @@ public class Application {
 			while (!(st_count == CORRECT_STRIKE_COUNT)) {
 
 				System.out.print("숫자를 입력해주세요 : ");
-				String tmp = Console.readLine();
+				String insertion = Console.readLine();
 
 				Input in = new Input();
-				List<Integer> input = in.input(tmp);
+				List<Integer> input = in.input(insertion);
 
 				Test.testLength(input);
 				Test.testvalue(input);
