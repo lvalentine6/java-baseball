@@ -11,12 +11,16 @@ public class Application {
 	public static void main(String[] args) {
 
 		int quit = 0;
+		final int NUMBER_SIZE = 3;
+		final int CORRECT_STRIKE_COUNT = 3;
+		final int MIN_NUMBER_RANGE = 1;
+		final int MAX_NUMBER_RANGE = 9;
 
 		while (!(quit == 2)) {
 
 			List<Integer> computer = new ArrayList<>();
-			while (computer.size() < 3) {
-				int randomNumber = Randoms.pickNumberInRange(1, 9);
+			while (computer.size() < NUMBER_SIZE) {
+				int randomNumber = Randoms.pickNumberInRange(MIN_NUMBER_RANGE, MAX_NUMBER_RANGE);
 				if (!computer.contains(randomNumber)) {
 					computer.add(randomNumber);
 				}
@@ -26,13 +30,13 @@ public class Application {
 
 			int st_count = 0;
 
-			while (!(st_count == 3)) {
+			while (!(st_count == CORRECT_STRIKE_COUNT)) {
 
 				System.out.print("숫자를 입력해주세요 : ");
-				String tmp = Console.readLine();
+				String insertion = Console.readLine();
 
 				Input in = new Input();
-				List<Integer> input = in.input(tmp);
+				List<Integer> input = in.input(insertion);
 
 				Test.testLength(input);
 				Test.testvalue(input);
@@ -67,9 +71,9 @@ class Input {
 	List<Integer> input = new ArrayList<>();
 	String[] in;
 
-	List<Integer> input(String tmp) {
+	List<Integer> input(String insertion) {
 
-		in = tmp.split("");
+		in = insertion.split("");
 		for (int i = 0; i < in.length; i++) {
 			if (!input.contains(Integer.parseInt(in[i]))) {
 				input.add(Integer.parseInt(in[i]));
@@ -127,19 +131,22 @@ class Print {
 class Test {
 	//입력 숫자의 길이 테스트
 	static void testLength(List<Integer> input) {
+		final int NUMBER_SIZE = 3;
 
-		if (!(input.size() == 3)) {
-			throw new IllegalArgumentException();
+		if (!(input.size() == NUMBER_SIZE)) {
+			throw new IllegalArgumentException("3자리의 중복되지 않는 수를 입력해주세요");
 		}
 
 	}
 
 	//입력 숫자의 중복값 테스트
 	static void testvalue(List<Integer> input) {
+		final int MIN_NUMBER_RANGE = 1;
+		final int MAX_NUMBER_RANGE = 9;
 
 		for (int i = 0; i < input.size(); i++) {
-			if (!(0 < input.get(i) && input.get(i) < 10)) {
-				throw new IllegalArgumentException();
+			if (!(MIN_NUMBER_RANGE <= input.get(i) && input.get(i) <= MAX_NUMBER_RANGE)) {
+				throw new IllegalArgumentException("1~9사이의 숫자만 입력해주세요");
 			}
 		}
 
