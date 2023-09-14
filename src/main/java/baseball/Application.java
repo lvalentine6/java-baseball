@@ -134,7 +134,7 @@ class Test {
 		final int NUMBER_SIZE = 3;
 
 		if (!(input.size() == NUMBER_SIZE)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("3자리의 중복되지 않는 수를 입력해주세요");
 		}
 
 	}
@@ -146,7 +146,7 @@ class Test {
 
 		for (int i = 0; i < input.size(); i++) {
 			if (!(MIN_NUMBER_RANGE <= input.get(i) && input.get(i) <= MAX_NUMBER_RANGE)) {
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("1~9사이의 숫자만 입력해주세요");
 			}
 		}
 
